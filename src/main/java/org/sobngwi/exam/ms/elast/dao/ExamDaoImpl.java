@@ -102,7 +102,7 @@ public class ExamDaoImpl implements ExamDao {
         try {
             return Optional.ofNullable(restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT));
         } catch (IOException e) {
-            log.error("Unsuccessful  Reception of docs : error message = [{}]", e.getMessage());
+            log.error("Unsuccessful  Reception of docs : error message = [{}]", e.getLocalizedMessage());
             throw e;
         }
 

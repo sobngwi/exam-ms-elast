@@ -1,0 +1,198 @@
+GET /java8-ocp2/_doc/_search
+
+DELETE /java8-ocp2
+
+PUT /java8-ocp2
+{
+  "settings" : {
+    "index.number_of_shards":1,
+    "index.number_of_replicas":0
+  }
+}
+
+GET /java8-ocp2/_doc/_search
+{
+  "query": {
+    "match": {
+
+        "question.chapitre": "1"
+    }
+  }
+}
+
+GET /java8-ocp2/_doc/_search
+{
+  "query": {
+    "match": {
+        "question.chapitre": "7"
+    }
+  }
+}
+## recherce de mots composé
+GET /java8-ocp2/_doc/_search
+{
+  "query": {
+    "match_phrase": {
+        "answer.reasons": "not guarantee"
+    }
+  }
+
+GET /java8-ocp2/_doc/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match_phrase": {
+            "question.subject": "class Diagram"
+          }
+        },
+        {
+          "match_phrase": {
+            "answer.reasons": "objects"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET /java8-ocp2/_doc/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match_phrase": {
+            "question.subject": "class Diagram"
+          }
+        }/_/
+      ]
+    }
+  }
+}
+
+### highligth the matching fragment
+
+GET /java8-ocp2/_doc/_search
+{
+  "query": {
+    "match_phrase": {
+        "answer.reasons": "not guarantee"
+    }
+  },
+  "highlight":{
+    "fields": {
+      "answer.reasons":{}
+    }
+  }
+}
+
+POST /customer/_doc/_bulk?pretty
+{"index":{"_id":"1"}}
+{"name": "John Doe" }
+{"index":{"_id":"2"}}
+{"name": "Jane Doe" }
+
+DELETE DOCUMENTS
+POST java8-ocp2/_delete_by_query
+{
+  "query": {
+    "match": {
+      "question.chapitre": "3"
+    }
+  }
+}
+
+curl -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/1 -d @ch1-q1.json
+for f in  `seq 1 21` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/{$f} -d @ch1-q$f.json; sleep 1 ; done
+
+ for f in  `seq 1 20` ; do  curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/22{$f} -d @ch2-q$f.json; sleep 1 ; done
+
+ for f in  `seq 1 20` ; do  curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/55{$f} -d @chap5-q$f.json; sleep 1 ; done
+  chap8 $ for f in  `seq 1 23` ; do  curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/88{$f} -d @chap8-q$f.json; sleep 1 ; done
+
+ for f in  `seq 1 20` ; do  curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/66{$f} -d @chap6-q$f.json; sleep 1 ; done
+ chap7 $ for f in  `seq 1 22` ; do  curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/77{$f} -d @chap7-q$f.json; sleep 1 ; done
+
+  chap9 $ for f in  `seq 1 20` ; do  curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/99{$f} -d @chap9-q$f.json; sleep 1 ; done
+   chap10 $ for f in  `seq 1 20` ; do  curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/100{$f} -d @chap10-q$f.json; sleep 1 ; done
+
+
+   -----test ----
+    exam-ms-elast (master) $ curl -X GET "http://localhost:8081/question/search/1" -H "accept: */*"
+   curl -X GET "http://localhost:8081/question/8" -H "accept: */*"
+
+   ---UT--
+   for f in  `seq 1 21` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/{$f} -d @ch1-q$f.json; sleep 1 ; done
+
+   for f in  `seq 1 20` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/20{$f} -d @ch2-q$f.json; sleep 1 ; done
+
+    chap3 $ for f in  `seq 1 25` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/30{$f} -d @ch3-q$f.json; sleep 1 ; done
+
+ 	chap4 $ for f in  `seq 1 20` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/40{$f} -d @ch4-q$f.json; sleep 1 ; done
+
+ 	 chap5 $ for f in  `seq 1 20` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/50{$f} -d @chap5-q$f.json; sleep 1 ; done
+
+ 	  chap6 $ for f in  `seq 1 20` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/60{$f} -d @chap6-q$f.json; sleep 1 ; done
+
+ 	 chap7 $ for f in  `seq 1 22` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/70{$f} -d @chap7-q$f.json; sleep 1 ; done
+
+ 	  chap8 $ for f in  `seq 1 23` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/80{$f} -d @chap8-q$f.json; sleep 1 ; done
+
+ 	   chap9 $ for f in  `seq 1 23` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/90{$f} -d @chap9-q$f.json; sleep 1 ; done
+
+ 	    :compat-mode:
+        = List of useful commands
+
+        == Spring boot client installation
+        ```
+        brew tap pivotal/tap
+        ```
+        ```
+        brew install springboot
+        ```
+        == get Spring Demo app
+        ```
+        spring init
+        ```
+        ```
+        curl start.spring.io
+        ```
+        ```
+        curl https://start.spring.io/starter.zip -o demo.zip
+        ```
+        ```
+        tmp $ spring init
+        Using service at https://start.spring.io
+        Content saved to 'demo.zip'
+         tmp $
+        ```
+        == run spring boot with maven
+        ```
+         livelessons-bootstrap (master) $ spring jar livelessons-bootstrap-autoconfiguration.jar livelessons-bootstrap-autoconfiguration
+        Resolving dependencies..
+        ```
+        ```
+        livelessons-bootstrap (master) $ ls -l livelessons-bootstrap-autoconfiguration.jar
+        -rw-r--r--  1 sobngwi  staff  22443798 26 déc 11:25 livelessons-bootstrap-autoconfiguration.jar
+         livelessons-bootstrap (master) $
+         ```
+        ``
+        livelessons-bootstrap (master) $ java -jar livelessons-bootstrap-autoconfiguration.jar
+        Tomcat v9.0.13
+        ```
+        ```
+        lvelessons-bootstrap (master) $ mvn clean package
+        ```
+        ```
+        livelessons-bootstrap-autoconfiguration (master) $ java -jar target/
+        classes/                                                             livelessons-bootstrap-autoconfiguration-1.0.0-SNAPSHOT.jar.original
+        generated-sources/                                                   maven-archiver/
+        livelessons-bootstrap-autoconfiguration-1.0.0-SNAPSHOT.jar           maven-status/
+         livelessons-bootstrap-autoconfiguration (master) $ java -jar target/livelessons-bootstrap-autoconfiguration-1.0.0-SNAPSHOT.jar
+        ```
+
+        ```
+        tmp $ mvn spring-boot:run
+        ```chap10 $ for f in  `seq 1 20` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/100{$f} -d @chap10-q$f.json; sleep 1 ; done
