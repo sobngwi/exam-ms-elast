@@ -3,6 +3,7 @@ package org.sobngwi.exam.ms.elast.dao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import org.springframework.stereotype.Component;
@@ -28,10 +29,12 @@ public class ExamDao {
         GetRequest getRequest = new GetRequest(INDEX, TYPE, id);
         GetResponse getResponse = null;
         try {
-            getResponse = restHighLevelClient.get(getRequest);
+            getResponse = restHighLevelClient.
+                    get(getRequest, RequestOptions.DEFAULT);
         } catch (java.io.IOException e){
             e.getLocalizedMessage();
         }
+
         Map<String, Object> sourceAsMap = getResponse.getSourceAsMap();
         return sourceAsMap;
     }
