@@ -13,7 +13,6 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
-import org.sobngwi.exam.ms.elast.service.ExamServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -28,12 +28,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Repository
 public class ExamDaoImpl implements ExamDao {
 
-    private static final Logger log = getLogger(ExamServiceImpl.class);
+    private static final Logger log = getLogger(ExamDaoImpl.class);
 
     @Value("${questionIndexName}")
-    private  String indexName;
+    private String indexName;
     @Value("${questionIndexType}")
-    private  String indexType;
+    private String indexType;
     private RestHighLevelClient restHighLevelClient;
 
     public ExamDaoImpl(RestHighLevelClient restHighLevelClient) {
@@ -41,49 +41,80 @@ public class ExamDaoImpl implements ExamDao {
     }
 
     @Override
-    public Map<String, Object> getQuestionById(String id){
-        GetRequest getRequest = new GetRequest(indexName, indexType, id);
-        GetResponse getResponse = null;
-
-        try {
-            getResponse = restHighLevelClient.
-                    get(getRequest, RequestOptions.DEFAULT);
-        } catch (java.io.IOException e){
-            log.error("Unsuccessfull  Reception of docs for chapId ={}, error message = [{}]", id, e.getLocalizedMessage());
-        }
+    public Map<String, Object> getQuestionById(String id) throws IOException {
+        final GetRequest getRequest = new GetRequest(indexName, indexType, id);
+        final GetResponse getResponse = getDocumentField(id, getRequest)
+                .orElseThrow(() -> new IOException("IOException : Can not Get Response"));
 
         Map<String, Object> result = new HashMap<>();
-        result.putIfAbsent(getResponse.getId(),getResponse.getSourceAsMap().get("question"));
+        result.putIfAbsent(getResponse.getId(), getResponse.getSourceAsMap().get("question"));
         return Collections.unmodifiableMap(result);
     }
 
     @Override
-    public  Map<String, Object> searchQuestionsByChapterId(String chapterId){
-        final Map<String, Object> results = new HashMap<>();
+    public Map<String, Object> searchQuestionsByChapterId(String chapterId) throws IOException {
+
         SearchRequest searchRequest = new SearchRequest(indexName);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         QueryBuilder matchQueryBuilder = QueryBuilders
-                .matchQuery("question.chapitre",  chapterId);
+                .matchQuery("question.chapitre", chapterId);
+        searchRequest.source(buildTheSearch(matchQueryBuilder, 25));
 
-        searchSourceBuilder.query(matchQueryBuilder);
-        searchSourceBuilder.size(25);
-        searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+        return computeResult(chapterId, searchRequest);
+    }
 
-        searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = null  ;
+    @Override
+    public Map<String, Object> searchAllQuestionsByExamType(String isExamQuestion) throws IOException {
+
+        SearchRequest searchRequest = new SearchRequest(indexName);
+        QueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("question.exam", isExamQuestion);
+
+        searchRequest.source(buildTheSearch(matchQueryBuilder, 300));
+
+        return computeResult(isExamQuestion, searchRequest);
+    }
+
+
+    private Optional<GetResponse> getDocumentField(String id, GetRequest getRequest) throws IOException {
+
         try {
-            searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+            return Optional.ofNullable(restHighLevelClient.
+                    get(getRequest, RequestOptions.DEFAULT));
         } catch (IOException e) {
-            log.error("Unsuccessfull  Reception of docs for chapId ={}, error message = [{}]", chapterId, e.getMessage());
+            log.error("Unsuccessful  Reception of docs for chapId ={}, error message = [{}]", id, e.getLocalizedMessage());
+            throw e;
         }
+    }
+
+    private Map<String, Object> computeResult(String chapterId, SearchRequest searchRequest) throws IOException {
+        final Map<String, Object> results = new HashMap<>();
+        SearchResponse searchResponse = getSearchResponse(searchRequest).orElseThrow(() -> new IOException("IOException : Can not Get Response"));
 
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHits = hits.getHits();
         for (SearchHit hit : searchHits) {
             results.putIfAbsent(hit.getId(), hit.getSourceAsMap().get("question"));
         }
-        log.info("Nb Of question on chap  {} : {} ", chapterId, results.keySet().size());
+        log.info("Nb Of questions on chap  {} : {} ", chapterId, results.keySet().size());
         return Collections.unmodifiableMap(results);
+    }
+
+    private Optional<SearchResponse> getSearchResponse(SearchRequest searchRequest) throws IOException {
+        try {
+            return Optional.ofNullable(restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT));
+        } catch (IOException e) {
+            log.error("Unsuccessful  Reception of docs : error message = [{}]", e.getMessage());
+            throw e;
+        }
+
+    }
+
+
+    private SearchSourceBuilder buildTheSearch(QueryBuilder matchQueryBuilder, int searchResultLimit) {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(matchQueryBuilder);
+        searchSourceBuilder.size(searchResultLimit);
+        searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+        return searchSourceBuilder;
     }
 
 }
