@@ -1,6 +1,5 @@
 package org.sobngwi.exam.ms.elast.dao;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -14,6 +13,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -27,22 +27,21 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Repository
 public class ExamDaoImpl implements ExamDao {
 
-    private static final Logger log =
-            getLogger(ExamDaoImpl.class);
+    private static final Logger log = getLogger(ExamDaoImpl.class);
 
-    private final String INDEX = "java8-ocp2";
-    private final String TYPE = "_doc";
+    @Value("${questionIndexName}")
+    private  String indexName;
+    @Value("${questionIndexType}")
+    private  String indexType;
     private RestHighLevelClient restHighLevelClient;
-    private ObjectMapper objectMapper;
 
-    public ExamDaoImpl(ObjectMapper objectMapper, RestHighLevelClient restHighLevelClient) {
-        this.objectMapper = objectMapper;
+    public ExamDaoImpl(RestHighLevelClient restHighLevelClient) {
         this.restHighLevelClient = restHighLevelClient;
     }
 
     @Override
     public Map<String, Object> getQuestionById(String id){
-        GetRequest getRequest = new GetRequest(INDEX, TYPE, id);
+        GetRequest getRequest = new GetRequest(indexName, indexType, id);
         GetResponse getResponse = null;
 
         try {
@@ -60,7 +59,7 @@ public class ExamDaoImpl implements ExamDao {
     @Override
     public  Map<String, Object> searchChapters(String chapterId){
         final Map<String, Object> results = new HashMap<>();
-        SearchRequest searchRequest = new SearchRequest("java8-ocp2");
+        SearchRequest searchRequest = new SearchRequest(indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         QueryBuilder matchQueryBuilder = QueryBuilders
                 .matchQuery("question.chapitre",  chapterId);
@@ -80,8 +79,6 @@ public class ExamDaoImpl implements ExamDao {
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHits = hits.getHits();
         for (SearchHit hit : searchHits) {
-            // do something with the SearchHit
-            //questions.add(hit.getSourceAsMap().get("question"));
             results.putIfAbsent(hit.getId(), hit.getSourceAsMap().get("question"));
         }
         log.info("Nb Of question on chap  {} : {} ", chapterId, results.keySet().size());
