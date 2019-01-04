@@ -1,8 +1,9 @@
-package org.sobngwi.exam.ms.elast.dao;
+package org.sobngwi.exam.ms.elast.service;
 
 import java.util.Map;
 
-public interface ExamDao {
+public interface ExamService {
+
     Map<String, Object> getQuestionById(String id);
 
     Map<String, Object> searchQuestionsByChapterId(String chapterId);

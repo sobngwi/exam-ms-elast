@@ -13,6 +13,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
+import org.sobngwi.exam.ms.elast.service.ExamServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +28,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Repository
 public class ExamDaoImpl implements ExamDao {
 
-    private static final Logger log = getLogger(ExamDaoImpl.class);
+    private static final Logger log = getLogger(ExamServiceImpl.class);
 
     @Value("${questionIndexName}")
     private  String indexName;
@@ -57,7 +58,7 @@ public class ExamDaoImpl implements ExamDao {
     }
 
     @Override
-    public  Map<String, Object> searchChapters(String chapterId){
+    public  Map<String, Object> searchQuestionsByChapterId(String chapterId){
         final Map<String, Object> results = new HashMap<>();
         SearchRequest searchRequest = new SearchRequest(indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
