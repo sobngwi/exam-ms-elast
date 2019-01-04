@@ -14,7 +14,7 @@ public class ExamMicroServiceElastApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ExamMicroServiceElastApplication.class, args);
-        log.info("Starting Application ExamMicroServiceElastApplication");
+        log.info("Starting Application ExamMicroServiceElastApplication OK");
     }
 
 }
