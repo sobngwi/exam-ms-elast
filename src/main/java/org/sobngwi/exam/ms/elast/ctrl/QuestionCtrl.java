@@ -7,6 +7,7 @@ import org.sobngwi.exam.ms.elast.exceptions.QuestionNotFoundException;
 import org.sobngwi.exam.ms.elast.exceptions.TechnicalQuestionException;
 import org.sobngwi.exam.ms.elast.service.ExamServiceImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -23,8 +24,8 @@ public class QuestionCtrl {
         this.examService = examService;
     }
 
-    @GetMapping("/{id}")
-    public Map<String, Object> getQuestionbyId(@PathVariable String id){
+    @GetMapping(path="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> getQuestionBbyId(@PathVariable String id){
         return examService.getQuestionById(id) ;
     }
 
