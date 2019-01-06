@@ -8,6 +8,7 @@ import org.sobngwi.exam.ms.elast.exceptions.TechnicalQuestionException;
 import org.sobngwi.exam.ms.elast.service.ExamServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -26,19 +27,21 @@ public class QuestionCtrl {
 
     @GetMapping(path="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> getQuestionBbyId(@PathVariable String id){
+        Assert.isTrue(Integer.parseInt(id) > 0 , "Id should be greater than zero");
         return examService.getQuestionById(id) ;
     }
 
     @GetMapping("/search/chapter/{chapId}")
     public  Map<String, Object>  searchQuestionsByChapId(@PathVariable String chapId){
+        Assert.isTrue(Integer.parseInt(chapId) > 0 , "Id should be greater than zero");
         return examService.searchQuestionsByChapterId(chapId) ;
     }
 
     @GetMapping("/search/{questionId}")
     public  Map<String, Object>  searchQuestionById(@PathVariable String questionId){
+        Assert.isTrue(Integer.parseInt(questionId) > 0 , "Id should be greater than zero");
         return examService.searchQuestionsByFunctionalId(questionId) ;
     }
-
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
