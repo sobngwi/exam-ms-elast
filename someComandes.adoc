@@ -196,3 +196,6 @@ for f in  `seq 1 21` ; do curl  -H 'Content-Type: application/json' -X PUT   htt
         ```
         tmp $ mvn spring-boot:run
         ```chap10 $ for f in  `seq 1 20` ; do curl  -H 'Content-Type: application/json' -X PUT   http://localhost:9200/java8-ocp2/_doc/100{$f} -d @chap10-q$f.json; sleep 1 ; done
+
+
+https://github.com/FasterXML/jackson-databind/blob/master/src/test/java/com/fasterxml/jackson/databind/TestRootName.java
