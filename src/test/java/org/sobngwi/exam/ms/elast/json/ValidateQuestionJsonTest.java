@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,7 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ValidateQuestionJsonTest {
 
     private ObjectMapper objectMapper;
+
     @Before
     public void setUp() {
         objectMapper = new ObjectMapper();
@@ -37,8 +41,9 @@ public class ValidateQuestionJsonTest {
         objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         JacksonTester.initFields(this, objectMapper);
     }
+
     @After
-    public void tearDown() throws Exception{
+    public void tearDown() throws Exception {
         objectMapper = null;
     }
 
@@ -46,6 +51,7 @@ public class ValidateQuestionJsonTest {
     private JacksonTester<Question> json;
 
     @Test
+    @Ignore
     public void serializeJson() throws Exception {
       /*  Question details = new Question("ch1-q1", false, "1", "Advanced Class Design Chapter",
                 "Single Choice", "What is the result of the following code?", "public String firstName, lastName;",
@@ -57,9 +63,9 @@ public class ValidateQuestionJsonTest {
                 " By process of elimination, the answer is B."); */
         QuestionBuilder questionBuilder = new QuestionBuilder();
         questionBuilder.setId("ch1-q1")
-                       .setChapterId("3");
-       Question
-         details = questionBuilder.build();
+                .setChapterId("3");
+        Question
+                details = questionBuilder.build();
        /* String jsonString = objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE)
                 .writeValueAsString(new RootNameDemoBean());*/
 
@@ -69,20 +75,27 @@ public class ValidateQuestionJsonTest {
 
         System.out.println(json.read("ch3-q1.json").getObject().toString());
 
-     //   InputStream input = new FileInputStream("/Users/sobngwi/intelliJ/codebase/exam-ms-elast/src/test/resources/org/sobngwi/exam/ms/elast/json/ch3-q1.json");
+        //   InputStream input = new FileInputStream("/Users/sobngwi/intelliJ/codebase/exam-ms-elast/src/test/resources/org/sobngwi/exam/ms/elast/json/ch3-q1.json");
 
 //        String jsonReadFromFile = objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE).readValue(input,Question.class).toString();
-      //  System.out.println(jsonReadFromFile);
+        //  System.out.println(jsonReadFromFile);
         //assertThat(this.json.write(details)).isEqualTo("ch3-q1.json");
         //assertThat(this.json.write(details)).isEqualToJson("ch3-q1.json");
-       // assertThat(json.write(details)).isEqualToJson("expected.json");
+        // assertThat(json.write(details)).isEqualToJson("expected.json");
 
         assertThat(jsonString).contains("question");
         assertThat(json.write(details)).hasJsonPathStringValue("@.id");
         assertThat(json.write(details)).extractingJsonPathStringValue("@.chapitre")
                 .isEqualTo("3");
-    }
 
+        try (FileReader fileReader = new FileReader("zoo.csv");
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            while (bufferedReader.readLine() != null) {
+                System.out.println(bufferedReader.readLine());
+            }
+        }
+
+    }
 }
 
 /*
