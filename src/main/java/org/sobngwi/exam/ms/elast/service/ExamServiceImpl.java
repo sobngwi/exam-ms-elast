@@ -4,7 +4,9 @@ package org.sobngwi.exam.ms.elast.service;
 import org.sobngwi.exam.ms.elast.dao.ExamDaoImpl;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class ExamServiceImpl implements ExamService {
@@ -16,20 +18,24 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public Map<String, Object> getQuestionById(String id) {
-           return   examDao.getQuestionById(id);
+    public  Optional<Object> getQuestionById(String id) {
+
+       return  Optional.of
+               (examDao.getQuestionById(id).values().stream().findFirst()).orElse(Optional.empty());
+
     }
 
     @Override
-    public Map<String, Object> searchQuestionsByFunctionalId(String questionId) {
-
-           return  examDao.searchQuestionByQuestionId(questionId);
+    public Optional<Object> searchQuestionsByFunctionalId(String questionId) {
+           return  Optional.of
+                   (examDao.searchQuestionByQuestionId(questionId).values().stream().findFirst());
     }
 
     @Override
-    public Map<String, Object> searchQuestionsByChapterId(String chapterId) {
+    public Optional <Object> searchQuestionsByChapterId(String chapterId) {
 
-         return   examDao.searchQuestionsByChapterId(chapterId);
+        return   Optional.of
+                (examDao.searchQuestionsByChapterId(chapterId).values().stream().collect(Collectors.toList()));
 
     }
 }

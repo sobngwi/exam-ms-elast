@@ -1,6 +1,5 @@
 package org.sobngwi.exam.ms.elast.config;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -8,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Configuration
 public class ElasticSearchConfiguration extends AbstractFactoryBean {
@@ -60,4 +57,7 @@ public class ElasticSearchConfiguration extends AbstractFactoryBean {
         }
         return restHighLevelClient;
     }
+
+
+
 }

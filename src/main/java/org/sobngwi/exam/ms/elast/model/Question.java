@@ -1,8 +1,6 @@
 package org.sobngwi.exam.ms.elast.model;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,16 +9,11 @@ import java.util.List;
 
 @Getter
 @Setter
-
-@JsonRootName(value = "question")
 @Data
 public final class Question {
 
-    @JsonProperty
     private String id;
-    @JsonProperty
     private String exam;
-    @JsonProperty
     private String chapitre;
     private String subject;
     private String type;

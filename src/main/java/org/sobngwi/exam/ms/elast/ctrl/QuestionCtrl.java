@@ -1,7 +1,6 @@
 package org.sobngwi.exam.ms.elast.ctrl;
 
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.sobngwi.exam.ms.elast.exceptions.QuestionNotFoundException;
 import org.sobngwi.exam.ms.elast.exceptions.TechnicalQuestionException;
@@ -11,11 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/question")
 @Slf4j
+@CrossOrigin(maxAge = 3600)
 public class QuestionCtrl {
 
 
@@ -25,22 +23,23 @@ public class QuestionCtrl {
         this.examService = examService;
     }
 
+
     @GetMapping(path="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> getQuestionBbyId(@PathVariable String id){
+    public Object getQuestionBbyId(@PathVariable String id){
         Assert.isTrue(Integer.parseInt(id) > 0 , "Id should be greater than zero");
-        return examService.getQuestionById(id) ;
+        return examService.getQuestionById(id).get();
     }
 
     @GetMapping("/search/chapter/{chapId}")
-    public  Map<String, Object>  searchQuestionsByChapId(@PathVariable String chapId){
+    public  Object  searchQuestionsByChapId(@PathVariable String chapId){
         Assert.isTrue(Integer.parseInt(chapId) > 0 , "Id should be greater than zero");
-        return examService.searchQuestionsByChapterId(chapId) ;
+        return examService.searchQuestionsByChapterId(chapId).get() ;
     }
 
     @GetMapping("/search/{questionId}")
-    public  Map<String, Object>  searchQuestionById(@PathVariable String questionId){
-        Assert.isTrue(Integer.parseInt(questionId) > 0 , "Id should be greater than zero");
-        return examService.searchQuestionsByFunctionalId(questionId) ;
+    public  Object  searchQuestionById(@PathVariable String questionId){
+        Assert.isTrue( (questionId != null && !questionId.isEmpty()) , "Id should be greater than zero");
+        return examService.searchQuestionsByFunctionalId(questionId).get() ;
     }
 
     @ExceptionHandler

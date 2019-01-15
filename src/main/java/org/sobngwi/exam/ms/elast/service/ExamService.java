@@ -1,13 +1,14 @@
 package org.sobngwi.exam.ms.elast.service;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface ExamService {
 
-    Map<String, Object> getQuestionById(String id) ;
+    Optional<Object> getQuestionById(String id) ;
 
-    Map<String, Object> searchQuestionsByChapterId(String chapterId);
+    Optional<Object>  searchQuestionsByChapterId(String chapterId);
 
-    Map<String, Object> searchQuestionsByFunctionalId(String chapterId);
+    Optional<Object>  searchQuestionsByFunctionalId(String chapterId);
 
 }

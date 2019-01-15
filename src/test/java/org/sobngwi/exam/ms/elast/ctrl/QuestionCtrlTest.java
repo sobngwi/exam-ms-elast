@@ -55,7 +55,7 @@ public class QuestionCtrlTest {
         Map <String, Object> m = new HashMap<>() ;
         m.putIfAbsent("1",  mapToObject("response_q1.json"));
 
-        given(examService.getQuestionById("1")).willReturn(m);
+        given(examService.getQuestionById("1").get()).willReturn(m);
 
         mvc.perform(get("/question/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -69,7 +69,7 @@ public class QuestionCtrlTest {
         Map <String, Object> m = new HashMap<>() ;
         m.putIfAbsent("1",  mapToObject("response_ch1.json"));
 
-        given(examService.searchQuestionsByChapterId("1")).willReturn(m);
+        given(examService.searchQuestionsByChapterId("1").get()).willReturn(m);
 
         mvc.perform(get("/question/search/chapter/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -87,7 +87,7 @@ public class QuestionCtrlTest {
         Map <String, Object> m = new HashMap<>() ;
         m.putIfAbsent("1",  mapToObject("response_q1.json"));
 
-        given(examService.searchQuestionsByFunctionalId("1")).willReturn(m);
+        given(examService.searchQuestionsByFunctionalId("1").get()).willReturn(m);
 
         mvc.perform(get("/question/search/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -98,7 +98,7 @@ public class QuestionCtrlTest {
     @Test
     public void shouldThrowsQuestionNotFoundExeption() throws  Exception{
 
-        given(examService.searchQuestionsByFunctionalId("1")).willThrow(QuestionNotFoundException.class);
+        given(examService.searchQuestionsByFunctionalId("1").get()).willThrow(QuestionNotFoundException.class);
 
         mvc.perform(get("/question/search/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -107,7 +107,7 @@ public class QuestionCtrlTest {
     @Test
     public void shouldThrowsTechnicalQuestionException() throws  Exception{
 
-        given(examService.searchQuestionsByFunctionalId("1")).willThrow( new TechnicalQuestionException("IO Problem."));
+        given(examService.searchQuestionsByFunctionalId("1").get()).willThrow( new TechnicalQuestionException("IO Problem."));
         mvc.perform(get("/question/search/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is5xxServerError());
     }

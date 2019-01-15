@@ -1,0 +1,17 @@
+{
+  "exam": "N",
+  "javaCode": "Map m = new HashMap();\nm.put(123, \"456\");\nm.put(\"abc\", \"def\");\nSystem.out.println(m.contains(\"123\"));",
+  "subject": "Generics and Collections Chapter",
+  "id": "ch3-q20",
+  "text": "What is the result of the following code?",
+  "chapitre": "3",
+  "type": "Single Choice",
+  "choices": [
+    "false",
+    "true",
+    "Compiler error on line 4.",
+    "Compiler error on line 5.",
+    "Compiler error on line 7.",
+    "A runtime exception is thrown."
+  ]
+}
