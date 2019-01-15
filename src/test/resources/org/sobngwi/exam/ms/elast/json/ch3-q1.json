@@ -31,9 +31,6 @@
         "G.": ""
       }
     ]
-  },
-  "solutions": {
-    "choice": "B.",
-    "reasons": "The answer needs to implement List because the scenario allows duplicates. Since you need a List, you can eliminate C, D, and E immediately. HashMap is a Map and HashSet is a Set. LinkedList is both a List and a Queue. You want a regular List. Option A, Arrays, is trying to distract you. It is a utility class rather than a Collection. An array is not a collection. By process of elimination, the answer is B."
   }
+
 }

@@ -1,4 +1,5 @@
 {
+
   "1": {
     "exam": "N",
     "javaCode": "public class Employee { \npublic int employeeId; \npublic String firstName, lastName; \npublic int yearStarted;\n@Override public int hashCode() {\n return employeeId;\n}\npublic boolean equals(Employee e) {\nreturn this.employeeId == e.employeeId;\n}\npublic static void main(String[] args) {\n Employee one = new Employee();\none.employeeId = 101;\nEmployee two = new Employee();\ntwo.employeeId = 101; \nif (one.equals(two)) System.out.println(\"Success\"); \nelse System.out.println(\"Failure\"); \n } \n}",

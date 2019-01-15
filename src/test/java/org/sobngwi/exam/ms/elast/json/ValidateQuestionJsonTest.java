@@ -51,7 +51,6 @@ public class ValidateQuestionJsonTest {
     private JacksonTester<Question> json;
 
     @Test
-    @Ignore
     public void serializeJson() throws Exception {
       /*  Question details = new Question("ch1-q1", false, "1", "Advanced Class Design Chapter",
                 "Single Choice", "What is the result of the following code?", "public String firstName, lastName;",
@@ -83,57 +82,30 @@ public class ValidateQuestionJsonTest {
         //assertThat(this.json.write(details)).isEqualToJson("ch3-q1.json");
         // assertThat(json.write(details)).isEqualToJson("expected.json");
 
-        assertThat(jsonString).contains("question");
+        //assertThat(jsonString).contains("question");
+        assertThat(this.json.write(details)).isEqualTo("ch3-q1.json");
         assertThat(json.write(details)).hasJsonPathStringValue("@.id");
         assertThat(json.write(details)).extractingJsonPathStringValue("@.chapitre")
                 .isEqualTo("3");
 
-        try (FileReader fileReader = new FileReader("zoo.csv");
+      /*  try (FileReader fileReader = new FileReader("zoo.csv");
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
             while (bufferedReader.readLine() != null) {
                 System.out.println(bufferedReader.readLine());
             }
-        }
+        }*/
 
     }
 }
 
 /*
-public Question(String id, boolean exam, String chapterId, String subject,
-                    String type, String text, String javaCode, List<String> choices,
-                    String choice, String reasons) {
- */
-/*
-"1": {
-    "exam": "N",
-    "javaCode": "public class Employee { \npublic int employeeId; \npublic String firstName, lastName; \npublic int yearStarted;\n@Override public int hashCode() {\n return employeeId;\n}\npublic boolean equals(Employee e) {\nreturn this.employeeId == e.employeeId;\n}\npublic static void main(String[] args) {\n Employee one = new Employee();\none.employeeId = 101;\nEmployee two = new Employee();\ntwo.employeeId = 101; \nif (one.equals(two)) System.out.println(\"Success\"); \nelse System.out.println(\"Failure\"); \n } \n}",
-    "subject": "Advanced Class Design Chapter",
-    "id": "ch1-q1",
-    "text": "What is the result of the following code?",
-    "chapitre": "1",
-    "type": "Single Choice",
-    "choices": [
-      {
-        "A.": "Success"
-      },
-      {
-        "B.": "Failure"
-      },
-      {
-        "C.": "The hashCode() method fails to compile."
-      },
-      {
-        "D.": "The equals() method fails to compile."
-      },
-      {
-        "E.": "Another line of code fails to compile."
-      },
-      {
-        "F.": "A runtime exception is thrown."
-      },
-      {
-        "G.": ""
-      }
-    ]
-  }
+@Test
+	public void serializeJson() throws Exception {
+		VehicleDetails details = new VehicleDetails("Honda", "Civic");
+		assertThat(this.json.write(details)).isEqualTo("vehicledetails.json");
+		assertThat(this.json.write(details)).isEqualToJson("vehicledetails.json");
+		assertThat(this.json.write(details)).hasJsonPathStringValue("@.make");
+		assertThat(this.json.write(details)).extractingJsonPathStringValue("@.make")
+				.isEqualTo("Honda");
+	}
  */
