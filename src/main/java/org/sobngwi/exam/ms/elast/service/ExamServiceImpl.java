@@ -1,13 +1,17 @@
 package org.sobngwi.exam.ms.elast.service;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.sobngwi.exam.ms.elast.dao.ExamDaoImpl;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class ExamServiceImpl implements ExamService {
 
@@ -38,4 +42,16 @@ public class ExamServiceImpl implements ExamService {
                 (examDao.searchQuestionsByChapterId(chapterId).values().stream().collect(Collectors.toList()));
 
     }
+
+    @Override
+    public List<Object> searchAllSubjectNamesInQuestions(){
+    List<Object> results = new ArrayList<>();
+        for ( int index = 1 ; index <=10 ; index++){
+            String functionalQuestionId="ch" +index + "-q"+ index;
+            log.debug("searchin question id : {}", functionalQuestionId);
+            results.add(this.searchQuestionsByFunctionalId(functionalQuestionId).get());
+        }
+        return results;
+    }
+
 }

@@ -13,10 +13,7 @@ import org.sobngwi.exam.ms.elast.model.Question;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -35,7 +32,7 @@ public class ExamServiceImplTest {
     private ExamService examService;
 
     private SoftAssertions softly;
-    private InputStream resourceAsStream_ch1_q1, resourceAsStream_ch3_q20, resourceAsStream_ch5;
+    private InputStream resourceAsStream_ch1_q1, resourceAsStream_ch3_q20, resourceAsStream_ch5, resourceAsStream_subjects;
 
     @Before
     public void setUp(){
@@ -45,6 +42,7 @@ public class ExamServiceImplTest {
         resourceAsStream_ch1_q1  = Question.class.getResourceAsStream("/response_q1.json");
         resourceAsStream_ch3_q20 = Question.class.getResourceAsStream("/response_ch3-q20.json");
         resourceAsStream_ch5     = Question.class.getResourceAsStream("/response_chap5.json");
+        resourceAsStream_subjects = Question.class.getResourceAsStream("/response_subjects.json");
     }
 
     @Test
@@ -112,6 +110,35 @@ public class ExamServiceImplTest {
         verify(examDao, times(1)).searchQuestionsByChapterId("5");
     }
 
+
+    @Test
+    public void searchAllSubjectsByChapterId() {
+
+        Object objectForIdOne = getObjectForJsonInputStream(resourceAsStream_subjects, Collection.class).get();
+        Map<String, Object> mapQuestionSubjects= new HashMap<>();
+        mapQuestionSubjects.putIfAbsent("1", objectForIdOne);
+        given(examDao.searchQuestionsByChapterId(anyString())).willReturn(mapQuestionSubjects);
+
+        examService.searchAllSubjectNamesInQuestions();
+
+        softly.assertThat(mapQuestionSubjects.keySet().size()).isEqualTo(1);
+        softly.assertThat(mapQuestionSubjects.values().toString()).contains(
+                "ch1-q1", "ch2-q2", "ch3-q3", "ch4-q4", "ch5-q5", "ch6-q6", "ch7-q7", "ch8-q8", "ch9-q9", "ch10-q10");
+        softly.assertAll();
+        verify(examDao, times(10)).searchQuestionByQuestionId(anyString());
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch1-q1");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch2-q2");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch3-q3");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch4-q4");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch5-q5");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch6-q6");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch7-q7");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch8-q8");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch9-q9");
+        verify(examDao, times(1)).searchQuestionByQuestionId("ch10-q10");
+
+    }
+
     private Optional<Object> getObjectForJsonInputStream(InputStream resourceAsStream , Class clazz) {
         try {
             return  Optional.ofNullable(new ObjectMapper().readValue(resourceAsStream, clazz));
@@ -120,6 +147,4 @@ public class ExamServiceImplTest {
         }
         return Optional.empty() ;
     }
-
-
 }

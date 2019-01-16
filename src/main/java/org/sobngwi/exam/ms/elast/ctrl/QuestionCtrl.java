@@ -42,6 +42,11 @@ public class QuestionCtrl {
         return examService.searchQuestionsByFunctionalId(questionId).get() ;
     }
 
+    @GetMapping("/search/subjects/all")
+    public  Object  searchQuestionSubjects(){
+        return examService.searchAllSubjectNamesInQuestions() ;
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void handleQuestionNotFound(QuestionNotFoundException ex) {

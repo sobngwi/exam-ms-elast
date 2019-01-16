@@ -1,0 +1,176 @@
+[
+  {
+    "exam": "N",
+    "javaCode": "public class Employee { \npublic int employeeId; \npublic String firstName, lastName; \npublic int yearStarted;\n@Override public int hashCode() {\n return employeeId;\n}\npublic boolean equals(Employee e) {\nreturn this.employeeId == e.employeeId;\n}\npublic static void main(String[] args) {\n Employee one = new Employee();\none.employeeId = 101;\nEmployee two = new Employee();\ntwo.employeeId = 101; \nif (one.equals(two)) System.out.println(\"Success\"); \nelse System.out.println(\"Failure\"); \n } \n}",
+    "subject": "Advanced Class Design Chapter",
+    "id": "ch1-q1",
+    "text": "What is the result of the following code?",
+    "chapitre": "1",
+    "type": "Single Choice",
+    "choices": [
+      "Success",
+      "Failure",
+      "The hashCode() method fails to compile.",
+      "The equals() method fails to compile.",
+      "Another line of code fails to compile.",
+      "A runtime exception is thrown."
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "public interface CanClimb {\npublic abstract void climb();\n}\npublic class EasternChipmunk extends Chipmunk {\npublic void chew() { System.out.println(\"Eastern Chipmunk is Chewing\"); }\n}",
+    "subject": "Design Patterns and Principles Chapter",
+    "id": "ch2-q2",
+    "text": "What is the result of the following code?",
+    "chapitre": "2",
+    "type": "Single Choice",
+    "choices": [
+      "It compiles and runs without issue.",
+      "The code will not compile because of line 2.",
+      "The code will not compile because of line 4.",
+      "The code will not compile because of line 5.",
+      "The code will not compile because of line 8.",
+      "It compiles but throws an exception at runtime."
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "",
+    "subject": "Generics and Collections Chapter",
+    "id": "ch3-q3",
+    "text": "Suppose that you need to work with a collection of elements that need to be sorted in their natural order, and each element has a unique string associated with its value. Which of the following collections classes in the java.util package best suit your needs for this scenario?",
+    "chapitre": "3",
+    "type": "Single Choice",
+    "choices": [
+      "ArrayList",
+      "HashMap",
+      "HashSet",
+      "TreeMap",
+      "TreeSet",
+      "Vector"
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "",
+    "subject": "Functional Programming Chapter",
+    "id": "ch4-q4",
+    "text": "Which are true statements about terminal operations in a stream? (Choose all that apply.)",
+    "chapitre": "4",
+    "type": "Multiple Choice",
+    "choices": [
+      "At most one terminal operation can exist in a stream pipeline.",
+      "Terminal operations are a required part of the stream pipeline in order to get a result.",
+      "Terminal operations have Stream as the return type.",
+      "The referenced Stream may be used after the calling a terminal operation."
+    ]
+  },
+  {
+    "exam": "N",
+    "propertiesFiles": {
+      "Dolphins_fr.properties": "name=Dolly",
+      "Dolphins.properties": "name=The Dolphin\nage=0",
+      "Dolphins_en.properties": "name=Dolly\nage=4"
+    },
+    "javaCode": "Locale fr = new Locale(\"fr\");\nLocale.setDefault(new Locale(\"en\", \"US\"));ResourceBundle b = ResourceBundle.getBundle(\"Dolphins\", fr); b.getString(\"name\");b.getString(\"age\");",
+    "subject": "Dates, Strings, and Localization",
+    "id": "ch5-q5",
+    "text": "Suppose that we have the following property files and code. Which bundles are used on lines 8 and 9 respectively?",
+    "chapitre": "5",
+    "type": "Single Choice",
+    "choices": [
+      "Dolphins.properties and Dolphins.properties",
+      "Dolphins.properties and Dolphins_en.properties",
+      "Dolphins_en.properties and Dolphins_en.properties",
+      "Dolphins_fr.properties and Dolphins.properties",
+      "Dolphins_fr.properties and Dolphins_en.properties",
+      "The code does not compile."
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "import java.io.*;\n AutocloseableFlow {\nstatic class Door implements AutoCloseable {\npublic void close() {\nSystem.out.print(\"D\");throw new RuntimeException();\n} }\nstatic class Window implements Closeable {\npublic void close() {\nSystem.out.print(\"W\");throw new RuntimeException();\n} }\npublic static void main(String[] args) {\ntry {\nDoor d = new Door(); Window w = new Window()\n}\n{\nSystem.out.print(\"T\");\n} catch (Exception e) {\nSystem.out.print(\"E\");\n} finally {\nSystem.out.print(\"F\");\n} \n} \n}",
+    "subject": "Exceptions and Assertions",
+    "id": "ch6-q6",
+    "text": "What is the output of the following code?",
+    "chapitre": "6",
+    "type": "Single Choice",
+    "choices": [
+      "TWF",
+      "TWDF",
+      "TWDEF",
+      "TWF followed by an exception",
+      "TWDF followed by an exception",
+      "TWEF followed by an exception",
+      "The code does not compile."
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "List<Integer> l1 = Arrays.asList(1,2,3);\nList<Integer> l2 = new CopyOnWriteArrayList<>(l1);\n= new ConcurrentSkipListSet<>();\ns3.addAll(l1);\nfor(Integer item: l2) l2.add(4); // x1\nfor(Integer item: s3) s3.add(5); // x2\nSystem.out.println(l1.size()+\" \"+l2.size()+\" \"+s3.size());\n",
+    "subject": "Concurrency",
+    "id": "ch7-q7",
+    "text": "What is the result of executing the following code snippet?",
+    "chapitre": "7",
+    "type": "Single Choice",
+    "choices": [
+      "It outputs 3 6 4.",
+      "It outputs 6 6 6.",
+      "It outputs 6 3 4.",
+      "The code does not compile.",
+      "It compiles but throws an exception at runtime on line x1.",
+      "It compiles but throws an exception at runtime on line x2.",
+      "It compiles but enters an infinite loop at runtime."
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "",
+    "subject": "IO",
+    "id": "ch8-q8",
+    "text": "Assuming / is the root directory, which of the following are true statements? (Choose all that apply.)",
+    "chapitre": "8",
+    "type": "Multiple Choice",
+    "choices": [
+      "/home/parrot is an absolute path.",
+      "/home/parrot is a directory.",
+      "/home/parrot is a relative path.",
+      "The path pointed to from a File object must exist.",
+      "The parent of the path pointed to by a File object must exist."
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "",
+    "subject": "NIO2",
+    "id": "ch9-q9",
+    "text": "What are some advantages of using Files.lines() over Files.readAllLines()? (Choose all that apply.)",
+    "chapitre": "9",
+    "type": "Multiple Choice",
+    "choices": [
+      "It is often faster.",
+      "It can be run on large files with very little memory available.",
+      "It can be chained with stream methods directly.",
+      "It does not modify the contents of the file.",
+      "It ensures the file is not read-locked by the file system.",
+      "There are no differences, because one method is a pointer to the other."
+    ]
+  },
+  {
+    "exam": "N",
+    "javaCode": "public static void main(String[] args) throws SQLException {\nConnection conn = DriverManager.getConnection(\"jdbc:derby:zoo\");\nStatement stmt = conn.createStatement();\nint result = stmt.executeUpdate(\"update animal set name = name\");\nSystem.out.println(result);\n}",
+    "subject": "JDBC",
+    "id": "ch10-q10",
+    "text": "Suppose that the table animal has five rows and this SQL statement updates all of them. What is the result of this code?",
+    "chapitre": "10",
+    "type": "Single Choice",
+    "choices": [
+      "0",
+      "1",
+      "5",
+      "The code does not compile.",
+      "A SQLException is thrown.",
+      "A different exception is thrown."
+    ]
+  }
+]
