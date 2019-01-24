@@ -6,7 +6,6 @@ import org.sobngwi.exam.ms.elast.dao.ExamDaoImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +35,12 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public Optional<Object> searchSolutionByFunctionalId(String solutionId) {
+        return  Optional.of
+                (examDao.searchSolutionByQuestionId(solutionId).values().stream().findFirst());
+    }
+
+    @Override
     public Optional <Object> searchQuestionsByChapterId(String chapterId) {
 
         return   Optional.of
@@ -48,7 +53,7 @@ public class ExamServiceImpl implements ExamService {
     List<Object> results = new ArrayList<>();
         for ( int index = 1 ; index <=10 ; index++){
             String functionalQuestionId="ch" +index + "-q"+ index;
-            log.debug("searchin question id : {}", functionalQuestionId);
+            log.debug("searching question id : {}", functionalQuestionId);
             results.add(this.searchQuestionsByFunctionalId(functionalQuestionId).get());
         }
         return results;

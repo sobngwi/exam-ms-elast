@@ -7,24 +7,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.sobngwi.exam.ms.elast.dao.ExamDaoImpl;
 import org.sobngwi.exam.ms.elast.model.Question;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * JSON tests for {@link ExamServiceImpl}.
  */
 @Slf4j
-public class ExamServiceImplTest {
+public class ExamServiceImplTest implements ExamServiceTest{
 
     @Mock
     private ExamDaoImpl examDao;
@@ -139,12 +142,4 @@ public class ExamServiceImplTest {
 
     }
 
-    private Optional<Object> getObjectForJsonInputStream(InputStream resourceAsStream , Class clazz) {
-        try {
-            return  Optional.ofNullable(new ObjectMapper().readValue(resourceAsStream, clazz));
-        } catch (IOException e) {
-            log.error("exeption is : {}", e.getLocalizedMessage());
-        }
-        return Optional.empty() ;
-    }
 }
